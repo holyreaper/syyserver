@@ -1,3 +1,2 @@
 heloworld
-ssh-keygen -t rsa -C ¡°lihuaming45@126.com"
-ssh-keygen -t rsa -C "lihuaming45@126.com"
+sdsf

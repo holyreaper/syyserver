@@ -16,6 +16,12 @@
     <Filter Include="头文件\platform">
       <UniqueIdentifier>{5165e49f-5f32-48f3-8bd9-e23df1b9123e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\rmi">
+      <UniqueIdentifier>{a631e8e6-79b8-46a9-888e-bf7a9141456d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\rmi">
+      <UniqueIdentifier>{967723dd-1cc8-4612-82af-83a35143a8b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -27,19 +33,31 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="task.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="taurus.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="taurus_imp.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="platform\auto_ptr.hpp">
       <Filter>头文件\platform</Filter>
     </ClInclude>
     <ClInclude Include="platform\_platform_def.h">
+      <Filter>头文件\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="rmi\bd_list.h">
+      <Filter>头文件\rmi</Filter>
+    </ClInclude>
+    <ClInclude Include="rmi\task.h">
+      <Filter>头文件\rmi</Filter>
+    </ClInclude>
+    <ClInclude Include="rmi\taurus.h">
+      <Filter>头文件\rmi</Filter>
+    </ClInclude>
+    <ClInclude Include="rmi\taurus_imp.h">
+      <Filter>头文件\rmi</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\ByteStream.h">
+      <Filter>头文件\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\timer_manager.h">
+      <Filter>头文件\rmi</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\closure.h">
       <Filter>头文件\platform</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,11 +68,11 @@
     <ClCompile Include="syyserver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="task.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="rmi\task.cpp">
+      <Filter>源文件\rmi</Filter>
     </ClCompile>
-    <ClCompile Include="taurus_imp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="rmi\taurus_imp.cpp">
+      <Filter>源文件\rmi</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

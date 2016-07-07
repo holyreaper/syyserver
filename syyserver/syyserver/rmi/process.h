@@ -190,7 +190,7 @@ struct ITask
 /*****************************************//**
  * Task管理器接口
  ********************************************/
-interface IEventSelector;
+// interface IEventSelector;
 struct ITaskManager
 {
 	virtual TaskID StartTask( IFuncClosure* closure ) = 0;
@@ -204,7 +204,7 @@ struct ITaskManager
 
 	virtual int TotalTask() = 0;
 
-	virtual IEventSelector* GetEventSelector( void ) = 0;
+// 	virtual IEventSelector* GetEventSelector( void ) = 0;
 
 	virtual void Release() = 0;
 };
@@ -227,167 +227,167 @@ struct ITaskStartNotifier
 {
 	virtual bool OnTaskStart( TaskToken& TT, ITask* tsk ) = 0;
 };
-/*****************************************//**
- * 函数闭包对象
- ********************************************/
-// #include <common_lib/cpp_templates/closure.h>
-
-template < typename FunctionT, int IS_RMI = 0 >
-struct CFuncClosure : public IFuncClosure
-{
-public:
-	typedef memfun_trait<FunctionT> FunTraitT;
-
-	typedef typename FunTraitT::class_type		ClassT;
-	typedef typename FunTraitT::function_type	FuncT;
-	typedef typename FunTraitT::result_type		ReT;
-
-	typedef typename __arg_type_selector<FunctionT, IS_RMI>::args_type ArgsT;
-
-	typedef typename __type_selector< h3d_is_void<ReT>::value
-									, closure_impl_normal<FuncT, IS_RMI>
-									, closure_impl_void<FuncT, IS_RMI> >::type ClosureT;
-private:
-	ClosureT m_closure;
-public:
-	CFuncClosure( ClassT* cls, FuncT func, const ArgsT& args )
-		:m_closure( cls, func, args )
-	{
-	}
-	CFuncClosure( ClassT* cls, FuncT func, CIStream& is )
-		:m_closure( cls, func, is )
-	{
-	}
-	virtual void Execute( void )
-	{
-		m_closure();
-	}
-	virtual void Release( void )
-	{
-		delete this;
-	}
-	virtual void FetchResult( void* presult )
-	{
-		m_closure.fetch_result( presult );
-	}
-	virtual void FetchOutParam( COStream& os )
-	{
-		m_closure.m_args.LoadWriteable( os );
-	}
-};
-
-/*****************************************//**
- * Task帮助函数
- ********************************************/
-inline void YIELD( TaskToken& TT, size_t milliseconds )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	ITask* curr_task = tskmng->CurrentTask();
-
-// 	strongAssert( curr_task );
-	curr_task->_Yield( TT, milliseconds );
-}
-
-inline void SUSPEND( TaskToken& TT )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	ITask* curr_task = tskmng->CurrentTask();
-
-// 	strongAssert( curr_task );
-	curr_task->_Suspend(TT);
-}
-
-inline void JOIN( TaskToken& TT, TaskID child )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	ITask* curr_task = tskmng->CurrentTask();
-
-// 	strongAssert( curr_task && curr_task->GetID()!=child );
-	curr_task->_Join( TT, child );
-}
-
-inline void RESUME( TaskID tskid )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	tskmng->ResumeTask( tskid );
-}
-
-inline TaskID CurrentTaskID( void )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	ITask* curr_task = tskmng->CurrentTask();
-	return curr_task ? curr_task->GetID() : 0;
-}
-
-inline ITask* CurrentTask( void )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	return tskmng->CurrentTask();
-}
-
-inline ITask* FindTask( TaskID id )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	return tskmng->FindTask( id );
-}
-
-/*! 启动Task */
-template< typename ClassT, typename FuncT >
-TaskID START_TASK_IMP( ClassT* cls, FuncT func );
-
-/*! 启动远程调用Task */
-template< typename ClassT, typename FuncT, typename ArgsT >
-inline TaskID START_RMI_TASK( ClassT* cls, FuncT func, const ArgsT& args )
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	IFuncClosure* closure = new CFuncClosure<FuncT,1>(cls,func,args);
-	return tskmng->StartTask( closure );
-}
-
-/*! 使用Stream作为参数启动Task */
-template< typename ClassT, typename FuncT>
-inline TaskID START_TASK_FROMSTREAM( ClassT* cls, FuncT func, CIStream& is)
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	IFuncClosure* closure = new CFuncClosure<FuncT,0>(cls,func,is);
-	return tskmng->StartTask( closure );
-}
-
-/*! 使用Stream作为参数启动远程调用Task */
-template< typename ClassT, typename FuncT>
-inline TaskID START_RMI_TASK_FROMSTREAM( ClassT* cls, FuncT func, CIStream& is)
-{
-	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
-	IFuncClosure* closure = new CFuncClosure<FuncT,1>(cls,func,is);
-	return tskmng->StartTask( closure );
-}
-
-inline void MUST_BE_RUN_AS_TASK( void )
-{
-	ITask* curr_task = GetBiboRegistry()->GetTaskManager()->CurrentTask();
-	if ( !curr_task )
-	{
-#if _DEBUG
-// 		strongAssert(0 && "Current Task not found, you cannot call a task directly!!!");
-#else
-// 		LogError( "Current Task not found!!!" );
-#endif
-	}
-}
+// /*****************************************//**
+//  * 函数闭包对象
+//  ********************************************/
+// // #include <common_lib/cpp_templates/closure.h>
+// 
+// template < typename FunctionT, int IS_RMI = 0 >
+// struct CFuncClosure : public IFuncClosure
+// {
+// public:
+// 	typedef memfun_trait<FunctionT> FunTraitT;
+// 
+// 	typedef typename FunTraitT::class_type		ClassT;
+// 	typedef typename FunTraitT::function_type	FuncT;
+// 	typedef typename FunTraitT::result_type		ReT;
+// 
+// 	typedef typename __arg_type_selector<FunctionT, IS_RMI>::args_type ArgsT;
+// 
+// 	typedef typename __type_selector< h3d_is_void<ReT>::value
+// 									, closure_impl_normal<FuncT, IS_RMI>
+// 									, closure_impl_void<FuncT, IS_RMI> >::type ClosureT;
+// private:
+// 	ClosureT m_closure;
+// public:
+// 	CFuncClosure( ClassT* cls, FuncT func, const ArgsT& args )
+// 		:m_closure( cls, func, args )
+// 	{
+// 	}
+// 	CFuncClosure( ClassT* cls, FuncT func, CIStream& is )
+// 		:m_closure( cls, func, is )
+// 	{
+// 	}
+// 	virtual void Execute( void )
+// 	{
+// 		m_closure();
+// 	}
+// 	virtual void Release( void )
+// 	{
+// 		delete this;
+// 	}
+// 	virtual void FetchResult( void* presult )
+// 	{
+// 		m_closure.fetch_result( presult );
+// 	}
+// 	virtual void FetchOutParam( COStream& os )
+// 	{
+// 		m_closure.m_args.LoadWriteable( os );
+// 	}
+// };
+// 
+// /*****************************************//**
+//  * Task帮助函数
+//  ********************************************/
+// inline void YIELD( TaskToken& TT, size_t milliseconds )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	ITask* curr_task = tskmng->CurrentTask();
+// 
+// // 	strongAssert( curr_task );
+// 	curr_task->_Yield( TT, milliseconds );
+// }
+// 
+// inline void SUSPEND( TaskToken& TT )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	ITask* curr_task = tskmng->CurrentTask();
+// 
+// // 	strongAssert( curr_task );
+// 	curr_task->_Suspend(TT);
+// }
+// 
+// inline void JOIN( TaskToken& TT, TaskID child )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	ITask* curr_task = tskmng->CurrentTask();
+// 
+// // 	strongAssert( curr_task && curr_task->GetID()!=child );
+// 	curr_task->_Join( TT, child );
+// }
+// 
+// inline void RESUME( TaskID tskid )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	tskmng->ResumeTask( tskid );
+// }
+// 
+// inline TaskID CurrentTaskID( void )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	ITask* curr_task = tskmng->CurrentTask();
+// 	return curr_task ? curr_task->GetID() : 0;
+// }
+// 
+// inline ITask* CurrentTask( void )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	return tskmng->CurrentTask();
+// }
+// 
+// inline ITask* FindTask( TaskID id )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	return tskmng->FindTask( id );
+// }
+// 
+// /*! 启动Task */
+// template< typename ClassT, typename FuncT >
+// TaskID START_TASK_IMP( ClassT* cls, FuncT func );
+// 
+// /*! 启动远程调用Task */
+// template< typename ClassT, typename FuncT, typename ArgsT >
+// inline TaskID START_RMI_TASK( ClassT* cls, FuncT func, const ArgsT& args )
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	IFuncClosure* closure = new CFuncClosure<FuncT,1>(cls,func,args);
+// 	return tskmng->StartTask( closure );
+// }
+// 
+// /*! 使用Stream作为参数启动Task */
+// template< typename ClassT, typename FuncT>
+// inline TaskID START_TASK_FROMSTREAM( ClassT* cls, FuncT func, CIStream& is)
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	IFuncClosure* closure = new CFuncClosure<FuncT,0>(cls,func,is);
+// 	return tskmng->StartTask( closure );
+// }
+// 
+// /*! 使用Stream作为参数启动远程调用Task */
+// template< typename ClassT, typename FuncT>
+// inline TaskID START_RMI_TASK_FROMSTREAM( ClassT* cls, FuncT func, CIStream& is)
+// {
+// 	ITaskManager* tskmng = GetBiboRegistry()->GetTaskManager();
+// 	IFuncClosure* closure = new CFuncClosure<FuncT,1>(cls,func,is);
+// 	return tskmng->StartTask( closure );
+// }
+// 
+// inline void MUST_BE_RUN_AS_TASK( void )
+// {
+// 	ITask* curr_task = GetBiboRegistry()->GetTaskManager()->CurrentTask();
+// 	if ( !curr_task )
+// 	{
+// #if _DEBUG
+// // 		strongAssert(0 && "Current Task not found, you cannot call a task directly!!!");
+// #else
+// // 		LogError( "Current Task not found!!!" );
+// #endif
+// 	}
+// }
 
 //----------------------------------------------
-#include "process.inl"
-
-#include "../process/function_object.h"
-
-
-inline void __CHECK_LAST_ERROR( void )
-{
-	if ( int err = GetBiboRegistry()->LastError() )
-	{
-		LogError( "WARNING!!! Unhandled LastError : ", err);
-		GetBiboRegistry()->ClearError();
-	}
-}
+// #include "process.inl"
+// 
+// #include "../process/function_object.h"
+// 
+// 
+// inline void __CHECK_LAST_ERROR( void )
+// {
+// 	if ( int err = GetBiboRegistry()->LastError() )
+// 	{
+// 		LogError( "WARNING!!! Unhandled LastError : ", err);
+// 		GetBiboRegistry()->ClearError();
+// 	}
+// }
 
 #endif

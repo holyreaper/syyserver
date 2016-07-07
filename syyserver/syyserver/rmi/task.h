@@ -53,12 +53,12 @@ class CTask : public ITask
 	params_t		m_user_params;
 
 	int64			m_timer_id;
-	IEventSelector* m_event_selector;
+	//IEventSelector* m_event_selector;
 
 	TaskToken		m_task_token;
 
 public:
-	CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IEventSelector* slec, IFuncClosure* closure );
+	CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IFuncClosure* closure );
 	~CTask();
 
 	void Init( size_t stack_size );
@@ -98,8 +98,7 @@ private:
 };
 
 class CTaskManager : public ITaskManager
-				   , public ITimerCallback
-				   , public INoticeCallback
+
 {
 	struct ReadyInfo
 	{
@@ -138,7 +137,7 @@ class CTaskManager : public ITaskManager
 	JoinTable		m_join_table;
 	ReadyList		m_ready_list;
 
-	IEventSelector* m_event_selector;
+//	IEventSelector* m_event_selector;
 
 	bool _already_add_notice;
 
@@ -161,7 +160,7 @@ public:
 	void _OnTaskJoin( TaskID parent, TaskID child );
 	void _OnTaskFinished( ITask* tsk );
 
-	IEventSelector* GetEventSelector( void );
+//	IEventSelector* GetEventSelector( void );
 
 	virtual void OnTimer(void* user_ptr);
 	virtual void ReleaseTimerCallback();
@@ -185,7 +184,7 @@ inline void OnCoroutineStackOverflow( void* addr )
 // 	alwaysAssert( false );
 }
 
-#if (PLATFORM_WIN32)
+#ifdef PLATFORM_WIN32
 	inline int SigStackHandler(struct _EXCEPTION_POINTERS *ep)
 	{
 		if ( ep->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW )

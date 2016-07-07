@@ -1,8 +1,8 @@
 #ifndef __TIMERMANAGER_H__8923lkjsk__
 #define __TIMERMANAGER_H__8923lkjsk__
 
-#include <platform/platform_shared/BiboFrame/BiboInterfaces.h>
-#include <platform/network/net.h>
+// #include <platform/platform_shared/BiboFrame/BiboInterfaces.h>
+// #include <platform/network/net.h>
 
 #include <map>
 #ifdef _HASH_MAP_

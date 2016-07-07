@@ -5,12 +5,12 @@
 
 #include "taurus_imp.h"
 
-CTask::CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IEventSelector* slec, IFuncClosure* closure )
+CTask::CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IFuncClosure* closure )
 	:m_tsk_mng( mng )
 	,m_id( id )
 	,m_co_thread( cothread )
 	,m_timer_id( 0 )
-	,m_event_selector( slec )
+	/*,m_event_selector( slec )*/
 	,m_result_notifier(NULL)
 	,m_start_notifier(NULL)
 	,m_finish_notifier(NULL)
@@ -25,15 +25,15 @@ CTask::~CTask()
 
 	if ( m_timer_id )
 	{
-		m_event_selector->CancelTimer( m_timer_id );
+// 		m_event_selector->CancelTimer( m_timer_id );
 	}
 }
 
 void CTask::_Yield( TaskToken& TT, size_t milliseconds )
 {
-	sysAssert( m_timer_id == 0 );
+// 	sysAssert( m_timer_id == 0 );
 
-	m_timer_id = m_event_selector->AddTimer( milliseconds, IEventSelector::TIMER_WAIT, m_tsk_mng, this ); 
+// 	m_timer_id = m_event_selector->AddTimer( milliseconds, IEventSelector::TIMER_WAIT, m_tsk_mng, this ); 
 	m_tsk_mng->_OnTaskYield( this, milliseconds );
 	co_yield( m_co_thread, m_co );
 }
@@ -48,7 +48,7 @@ void CTask::_Resume( void )
 {
 	if ( m_timer_id != 0 ) //并非time回调，而是使用者主动Resume
 	{
-		m_event_selector->CancelTimer( m_timer_id );
+//		m_event_selector->CancelTimer( m_timer_id );
 		m_timer_id = 0;
 	}
 
@@ -114,7 +114,6 @@ void CTask::FetchOutParam( COStream& os )
 void CTask::Init( size_t stack_size )
 {
  	m_co = co_create( m_co_thread, &CTask::FiberProc, this, stack_size );
-	alwaysAssert(m_co != NULL);
 }
  
 void CTask::FiberProc(void* lpParameter)
@@ -182,7 +181,7 @@ TaskToken& CTask::_GetTaskToken()
 CTaskManager::CTaskManager( co_thread_t co_thread, int stack_size )
 :_already_add_notice( false )
 {
-	m_event_selector = ::GetBiboRegistry()->CreateEventSelector();
+// 	m_event_selector = ::GetBiboRegistry()->CreateEventSelector();
 
 	m_default_stack_sz = stack_size;
 
@@ -193,14 +192,14 @@ CTaskManager::CTaskManager( co_thread_t co_thread, int stack_size )
 
 CTaskManager::~CTaskManager()
 {
-	m_event_selector->Release();
-	alwaysAssert(m_search_table.empty());
+// 	m_event_selector->Release();
+// 	alwaysAssert(m_search_table.empty());
 }
 
 TaskID CTaskManager::StartTask( IFuncClosure* closure )
 {
 	TaskID id = AllocID();
-	CTask* task = new CTask( this, id, m_co_thread, m_event_selector, closure );
+	CTask* task = new CTask( this, id, m_co_thread, closure );
 	
 	m_search_table[id] = task;
 
@@ -261,10 +260,10 @@ void CTaskManager::_OnTaskSuspend( ITask* tsk )
 {
 }
 
-IEventSelector* CTaskManager::GetEventSelector( void )
-{
-	return m_event_selector;
-}
+// IEventSelector* CTaskManager::GetEventSelector( void )
+// {
+// 	return m_event_selector;
+// }
 
 TaskID CTaskManager::AllocID( void )
 {
@@ -286,7 +285,7 @@ void CTaskManager::_CHECK_RESUME_SELF_ERROR( TaskID id )
 	ITask* curr = CurrentTask();
 	if ( curr && curr->GetID() == id )
 	{
-		lightAssert( "$HI_RED$CTaskManager::ResumeTask : Task resume self." );
+// 		lightAssert( "$HI_RED$CTaskManager::ResumeTask : Task resume self." );
 		return;
 	}
 }
@@ -301,7 +300,7 @@ CTask* CTaskManager::_FindTask( TaskID id )
 
 void CTaskManager::OnTimer(void* user_ptr)
 {
-	sysAssert( user_ptr );
+// 	sysAssert( user_ptr );
 	CTask* tsk = (CTask*)user_ptr;
 	tsk->OnTimer();
 	ResumeTask(tsk->GetID());
@@ -357,7 +356,7 @@ void CTaskManager::AddNotice( void )
 {
 	if ( !_already_add_notice )
 	{
-		m_event_selector->NotifyEvent( this, 0 );
+// 		m_event_selector->NotifyEvent( this, 0 );
 		_already_add_notice = true;
 	}
 }

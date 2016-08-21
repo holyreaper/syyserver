@@ -16,6 +16,7 @@ typedef unsigned int size32_t;
 #include <TCHAR.h>
 #include <direct.h>
 
+#include <iostream>
 
 enum STREAM_ERROR_CODE
 {

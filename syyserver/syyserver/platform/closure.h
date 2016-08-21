@@ -5,22 +5,22 @@
 class NULL_TYPE{};
 
 struct IClosure
-{	
+	{	
 
 	virtual void run()=0;
 	virtual void Release( void ) = 0;
+	virtual void LoadFromStream(CDynamicStreamBuf&buf) =0;
+
 };
-template<typename Class , typename Func,typename Argc, typename Argc2=NULL_TYPE,typename Argc3=NULL_TYPE,typename Argc4=NULL_TYPE >
+template<typename Class , typename Func,typename Argc=NULL_TYPE, typename Argc2=NULL_TYPE,typename Argc3=NULL_TYPE,typename Argc4=NULL_TYPE >
 class Closure:public IClosure
 {
 public:
 
-	Closure(Class* obj,Func fun, Argc argc,Argc2 argc2)
+	Closure(Class* obj,Func fun)
 	{
 		m_obj= obj;
 		m_func = fun;
-		m_argc = argc;
-		m_argc2 =argc2;
 	}
 	~Closure()
 	{
@@ -33,6 +33,11 @@ public:
 	virtual void Release( void )
 	{
 		delete this;
+	}
+	virtual void LoadFromStream(CDynamicStreamBuf&buf)
+	{
+		CIStream is(buf);
+		is >> m_argc >>m_argc2>>m_argc3>>m_argc4 ;
 	}
 
 private: 
@@ -48,12 +53,11 @@ class Closure<Class,Func,Argc,Argc2,Argc3,NULL_TYPE>:public IClosure
 {
 public:
 
-	Closure(Class* obj,Func fun, Argc argc,Argc2 argc2)
+	Closure(Class* obj,Func fun)
 	{
 		m_obj= obj;
 		m_func = fun;
-		m_argc = argc;
-		m_argc2 =argc2;
+
 	}
 	~Closure()
 	{
@@ -66,6 +70,11 @@ public:
 	virtual void Release( void )
 	{
 		delete this;
+	}
+	virtual void LoadFromStream(CDynamicStreamBuf&buf)
+	{
+		CIStream is(buf);
+		is >> m_argc >>m_argc2>>m_argc3 ;
 	}
 
 private: 
@@ -80,12 +89,10 @@ class Closure<Class,Func,Argc,Argc2,NULL_TYPE,NULL_TYPE>:public IClosure
 {
 public:
 
-	Closure(Class* obj,Func fun, Argc argc,Argc2 argc2)
+	Closure(Class* obj,Func fun)
 	{
 		m_obj= obj;
 		m_func = fun;
-		m_argc = argc;
-		m_argc2 =argc2;
 	}
 	~Closure()
 	{
@@ -99,6 +106,11 @@ public:
 	{
 		delete this;
 	}
+	virtual void LoadFromStream(CDynamicStreamBuf&buf)
+	{
+		CIStream is(buf);
+		is >> m_argc >>m_argc2;
+	}
 
 private: 
 	Class* m_obj;
@@ -109,14 +121,13 @@ private:
 };
 
 template<typename Class , typename Func,typename Argc>
-class Closure<Class,Func,Argc,NULL_TYPE,NULL_TYPE>:public IClosure
+class Closure<Class,Func,Argc,NULL_TYPE,NULL_TYPE,NULL_TYPE>:public IClosure
 {
 public:
-	Closure(Class* obj,Func fun, Argc argc)
+	Closure(Class* obj,Func fun)
 	{
 		m_obj= obj;
 		m_func = fun;
-		m_argc = argc;
 	}
 	~Closure()
 	{
@@ -130,6 +141,11 @@ public:
 	{
 		delete this;
 	}
+	virtual void LoadFromStream(CDynamicStreamBuf&buf)
+	{
+		CIStream is(buf);
+		is>>m_argc;
+	}
 
 private: 
 	Class* m_obj;
@@ -138,7 +154,7 @@ private:
 };
 template<typename Class , typename Func>
 
-class Closure<Class,Func,NULL_TYPE,NULL_TYPE,NULL_TYPE>:public IClosure
+class Closure<Class,Func,NULL_TYPE,NULL_TYPE,NULL_TYPE,NULL_TYPE>:public IClosure
 {
 public:
 	Closure(Class* obj,Func fun)
@@ -157,6 +173,10 @@ public:
 	virtual void Release( void )
 	{
 		delete this;
+	}
+	virtual void LoadFromStream(CDynamicStreamBuf&buf)
+	{
+		
 	}
 
 private: 

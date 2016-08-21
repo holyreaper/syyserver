@@ -1,15 +1,4 @@
-/***********************************************
-* @file		task.h
-* @brief	Task库实现
-* @author	仲子路(zhongzilu@h3d.com.cn)
-*
-* 功能说明：1.Task实现
-*			2.TaskManager实现
-*			3.START_TASK帮助函数实现
-* 
-* 更新日志:
-*			[what] by [who] at [when]
-***********************************************/
+
 #ifndef PLATFORM_TASK_IMPLEMENTION_H
 #define PLATFORM_TASK_IMPLEMENTION_H
 
@@ -20,10 +9,6 @@
 #include <unordered_map>
 #endif
 #include "process.h"
-
-// #include <platform/platform_shared/BiboFrame/BiboPlatform.h>
-// #include <platform/platform_shared/BiboFrame/BiboInterfaces.h>
-// #include <platform/network/net.h>
 
 typedef int TaskID;
 
@@ -51,7 +36,7 @@ class CTask : public ITask
 	ITaskStartNotifier*		m_start_notifier;
 
 	params_t		m_user_params;
-
+	
 	int64			m_timer_id;
 	//IEventSelector* m_event_selector;
 

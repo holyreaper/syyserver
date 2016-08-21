@@ -9,54 +9,17 @@
 #include "./rmi/taurus.h"
 #include "./rmi/bd_list.h"
 #include "./rmi/taurus_imp.h"
-static int g_count =0;
 // #include <sys/time.h>   
 #include "./platform/closure.h"
-inline void FiberFunc(void * param)
-{
-	g_count++;
-	//printf("%s count:%d\n",param,g_count++);
-}
+#include "./rmi/rmi.h"
+#include "./logic/player.h"
 
-
-class closure_test
-{
-public:
-
-	closure_test()
-	{
-
-	}
-	~closure_test()
-	{
-
-	}
-
-	void print(int c)
-	{
-		std::cout<<c<<std::endl;
-	}
-protected:
-private:
-};
-
-
-template<typename TT, typename FF,typename AA>
-IClosure* Closure_Helper(TT *a ,FF b, AA c)
-{
-	return new Closure<TT,FF,AA>(a,b,c);
-}
 int _tmain(int argc, _TCHAR* argv[])
 {
-
+//	IplayerInterface* player = GENERATE_CLASS(CPlayer);
 
 	//_asm int 3;
-	CDynamicStreamBuf buf;
-	COStream os(buf);
-	os<<2;
-	CIStream is(buf);
-	int a =0;
-	is>>a;
+
 	co_thread_t t =  co_thread_init(1024*64,10,100);
 
 	cothread_ctx* ctx = (cothread_ctx*)t;
@@ -80,10 +43,25 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 
-
+	CDynamicStreamBuf buf;
+	COStream os(buf);
+	testsc dd;
+	dd.a =10;
+	os<<dd;
+// 	CIStream is(buf);
 	closure_test test;
-	IClosure * closure = Closure_Helper(&test,&closure_test::print,1);
-	closure->run();
+// 	IClosure * closure = Closure_Helper(1,&test,&closure_test::print,1);
+// 	closure->LoadFromStream(buf);
+// 	closure->run();
+// 	testsc dd;
+// 	IClosure * closure2 = Closure_Helper(2,&test,&closure_test::test2,dd);
+// 	os<<dd;
+// 	closure2->LoadFromStream(buf);
+// 	closure2->run();
+	RMI_CPlayer<CPlayer> player;
+	player.RegisterRmi();
+	player.call_func(buf);
+
+
 	return 0;
 }
-

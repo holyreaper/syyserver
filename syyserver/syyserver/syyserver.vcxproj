@@ -75,12 +75,15 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="logic\IplayerInterface.h" />
+    <ClInclude Include="logic\player.h" />
     <ClInclude Include="platform\auto_ptr.hpp" />
     <ClInclude Include="platform\ByteStream.h" />
     <ClInclude Include="platform\closure.h" />
     <ClInclude Include="platform\timer_manager.h" />
     <ClInclude Include="platform\_platform_def.h" />
     <ClInclude Include="rmi\bd_list.h" />
+    <ClInclude Include="rmi\rmi.h" />
     <ClInclude Include="rmi\task.h" />
     <ClInclude Include="rmi\taurus.h" />
     <ClInclude Include="rmi\taurus_imp.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="logic\player.cpp" />
     <ClCompile Include="rmi\task.cpp" />
     <ClCompile Include="rmi\taurus_imp.cpp" />
     <ClCompile Include="stdafx.cpp">

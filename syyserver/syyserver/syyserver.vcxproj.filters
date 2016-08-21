@@ -22,6 +22,9 @@
     <Filter Include="头文件\rmi">
       <UniqueIdentifier>{967723dd-1cc8-4612-82af-83a35143a8b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\logic">
+      <UniqueIdentifier>{17fc964e-26bb-42df-9fcb-7e8af201df89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -60,6 +63,15 @@
     <ClInclude Include="platform\closure.h">
       <Filter>头文件\platform</Filter>
     </ClInclude>
+    <ClInclude Include="rmi\rmi.h">
+      <Filter>头文件\rmi</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\IplayerInterface.h">
+      <Filter>源文件\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\player.h">
+      <Filter>源文件\logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -73,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="rmi\taurus_imp.cpp">
       <Filter>源文件\rmi</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\player.cpp">
+      <Filter>源文件\logic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,7 +19,9 @@ int _tmain(int argc, _TCHAR* argv[])
 //	IplayerInterface* player = GENERATE_CLASS(CPlayer);
 
 	//_asm int 3;
-
+	int a  =10 %4;
+	int b  =10 &3;
+	std::cout<<a<<b<<std::endl;
 	co_thread_t t =  co_thread_init(1024*64,10,100);
 
 	cothread_ctx* ctx = (cothread_ctx*)t;
@@ -61,7 +63,5 @@ int _tmain(int argc, _TCHAR* argv[])
 	RMI_CPlayer<CPlayer> player;
 	player.RegisterRmi();
 	player.call_func(buf);
-
-
 	return 0;
 }

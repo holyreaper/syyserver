@@ -9,7 +9,7 @@
 #include "../platform/closure.h"
 
 
-static std::map<int,IClosure*> g_closure_map;
+// static std::map<int,IClosure*> g_closure_map;
 
 
 #define REGISTER_RMI(id,cls,func_name) \
@@ -57,14 +57,13 @@ private:
 template<typename TT, typename FF,typename AA>
 IClosure* Closure_Helper(int id,TT *a ,FF b,AA c)
 {
-
-	 g_closure_map[id] = new Closure<TT,FF,AA>(a,b);
+	a->g_closure_map[id] = new Closure<TT,FF,AA>(a,b);
 	return NULL;
 };
 template<typename TT, typename FF>
 IClosure* Closure_Helper(int id,TT *a ,FF b)
 {
-	 g_closure_map[id] = new Closure<TT,FF>(a,b);
+	 a->g_closure_map[id] = new Closure<TT,FF>(a,b);
 	return NULL;
 };
 // template<typename FF>
@@ -117,7 +116,7 @@ class_name()														\
 {																	\
 																	\
 }																	\
-																	\
+public:																\
 virtual void call_func(CDynamicStreamBuf& buf)						\
 	{	FuncInfo info;												\
 		CIStream is(buf);											\
@@ -125,8 +124,12 @@ virtual void call_func(CDynamicStreamBuf& buf)						\
 		it->second->LoadFromStream(buf);							\
 		it->second->run();											\
 		std::cout<<"helo"<<std::endl;								\
-	}																
+	}																\
+public:																\
+	std::map<int,IClosure*> g_closure_map;							\
+					
 #define RMI_WRAPPER_CONSTRUCTOR										\
+public:																\
 	void RegisterRmi()											
 															
 #define RMI_SERVERFUNCTION_END() };

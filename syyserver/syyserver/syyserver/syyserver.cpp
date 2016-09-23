@@ -13,15 +13,29 @@
 #include "./platform/closure.h"
 #include "./rmi/rmi.h"
 #include "./logic/player.h"
+#include "./platform/random_util.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+
+	std::vector<int> a;
+	a.push_back(10);
+	a.push_back(50);
+	a.push_back(100);
+	a.push_back(200);
+
+	std::vector<int> b;
+
+	b.push_back(10);
+	b.push_back(50);
+	b.push_back(100);
+	b.push_back(2000);
+	int id = rand_by_weight(a,b);
+	std::cout<<id<<std::endl;
 //	IplayerInterface* player = GENERATE_CLASS(CPlayer);
 
 	//_asm int 3;
-	int a  =10 %4;
-	int b  =10 &3;
-	std::cout<<a<<b<<std::endl;
+// 	char buff[1==3];
 	co_thread_t t =  co_thread_init(1024*64,10,100);
 
 	cothread_ctx* ctx = (cothread_ctx*)t;

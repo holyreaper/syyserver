@@ -72,6 +72,12 @@
     <ClInclude Include="logic\player.h">
       <Filter>源文件\logic</Filter>
     </ClInclude>
+    <ClInclude Include="platform\random_util.h">
+      <Filter>头文件\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\char_mng.h">
+      <Filter>源文件\logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -87,6 +93,9 @@
       <Filter>源文件\rmi</Filter>
     </ClCompile>
     <ClCompile Include="logic\player.cpp">
+      <Filter>源文件\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\char_mng.cpp">
       <Filter>源文件\logic</Filter>
     </ClCompile>
   </ItemGroup>

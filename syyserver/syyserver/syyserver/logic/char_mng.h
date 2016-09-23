@@ -12,6 +12,7 @@ class CCharManager
 public:
 	CCharManager();
 	virtual ~CCharManager();
+	void Update(tick_t tick);	
 public:
 
 protected:
@@ -21,5 +22,6 @@ protected:
 	hash_map<int64,IplayerInterface*>_user_map;
 
 #endif
+	tick_t _last_update_tick;
 };
 #endif//_CHAR_MNG_H_2016_09_23_H

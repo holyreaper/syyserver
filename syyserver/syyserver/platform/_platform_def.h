@@ -3,8 +3,11 @@
 #if  defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 	#define PLATFORM_WIN32
 typedef __int64 int64;
+typedef __int64 tick_t;
+
 #else
 typedef long long int64;
+typedef long long tick_t;
 #endif
 
 

@@ -3,14 +3,14 @@
 
 // #include <platform/platform_shared/BiboFrame/BiboInterfaces.h>
 // #include <platform/network/net.h>
-
+#include "_platform_def.h"
 #include <map>
 #ifdef _HASH_MAP_
 #include <unordered_map>
 #endif
 
 
-class CTimerManager : public INoticeCallback
+class CTimerManager //: public INoticeCallback
 {
 	enum{BEAT_TICK = 10};
 	typedef int64 TrigTime;

@@ -1,5 +1,9 @@
-#include <string>
+#ifndef  RANDOM_UTIL_H_2016_09_28_
+#define  RANDOM_UTIL_H_2016_09_28_
 
+#include <string>
+#include "_platform_def.h"
+#include <stdio.h>
 double get_rand()
 {
 	return rand() / (RAND_MAX + 1.0);
@@ -31,3 +35,4 @@ int rand_by_weight( const std::vector<int>& val, const std::vector<int>& rnd )
 	}
 	return val[k];
 }
+#endif//

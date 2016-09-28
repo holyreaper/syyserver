@@ -23,17 +23,17 @@ typedef int TaskID;
 #define NO_TASK_SAFE_CHECK
 #include "../platform/ByteStream.h"
 class CTask;
-struct TaskTupleHelper;
-struct InvokeHelper;
-struct TaskToken
+//struct TaskTupleHelper;
+//struct InvokeHelper;
+struct TaskToken//确保只在task内部生成
 {
 	friend class CTask;
-	friend struct TaskTupleHelper;
-	friend struct InvokeHelper;
-	template<typename T0, typename T1, typename T2, typename T3, typename T4,
-	typename T5, typename T6, typename T7, typename T8, typename T9> friend struct tuple;
-	template<typename T0, typename T1, typename T2, typename T3, typename T4,
-	typename T5, typename T6, typename T7, typename T8, typename T9> friend struct rmi_tuple;
+// 	friend struct TaskTupleHelper;
+// 	friend struct InvokeHelper;
+// 	template<typename T0, typename T1, typename T2, typename T3, typename T4,
+// 	typename T5, typename T6, typename T7, typename T8, typename T9> friend struct tuple;
+// 	template<typename T0, typename T1, typename T2, typename T3, typename T4,
+// 	typename T5, typename T6, typename T7, typename T8, typename T9> friend struct rmi_tuple;
 private:
 	TaskToken(){}
 };

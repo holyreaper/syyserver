@@ -16,7 +16,6 @@ CTask::CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IFuncClosure* 
 	,m_finish_notifier(NULL)
 {
 	m_closure = closure;
-
 	m_co = 0;
 }
 CTask::~CTask()
@@ -217,7 +216,7 @@ void CTaskManager::ResumeTask( TaskID id )
 	_CHECK_RESUME_SELF_ERROR(id);
 #endif
 
-	//if ( ITask* task = FindTask( id ) )
+	if ( ITask* task = FindTask( id ) )
 	{
 		//不直接Resume，先放到resume_list里面
 		//task->_Resume();

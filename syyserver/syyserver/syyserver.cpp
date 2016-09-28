@@ -14,34 +14,42 @@
 #include "./rmi/rmi.h"
 #include "./logic/player.h"
 #include "./platform/random_util.h"
-
+#include "./rmi/task.h"
+#include "./platform/time_util.h"
+// #include "./platform/timer_manager.h"
+ITaskManager* _InitTask();
 int _tmain(int argc, _TCHAR* argv[])
 {
-
-//	IplayerInterface* player = GENERATE_CLASS(CPlayer);
-	//_asm int 3;
-// 	char buff[1==3];
-	co_thread_t t =  co_thread_init(1024*64,10,100);
-
-	cothread_ctx* ctx = (cothread_ctx*)t;
-	int ticket = GetTickCount();
-
-	while (g_count < 10000000)
+	bool exit = false;
+	//init net thread
+	//init cothread//
+	ITaskManager * task = _InitTask();
+	assert(task);
+	do 
 	{
-		//Sleep(10);
-		coroutine* c=(coroutine*)bd_pop_back(&ctx->co_cache_list);
-		if (c)
-		{
-			c->status = co_stat_wait;
-			c->func = FiberFunc;
-			c->data ="fiber";
-			co_resume(t,c);
-		}
-		co_update(t);
-	}
-	int ticket_e = GetTickCount();
-	printf("all time :%d\n",ticket_e - ticket);
-
+		Sleep(1);
+	} while (!exit);
+// 	co_thread_t t =  co_thread_init(1024*64,10,100);
+// 
+// 	cothread_ctx* ctx = (cothread_ctx*)t;
+// 	int ticket = GetTickCount();
+// 
+// 	while (g_count < 10000000)
+// 	{
+// 		//Sleep(10);
+// 		coroutine* c=(coroutine*)bd_pop_back(&ctx->co_cache_list);
+// 		if (c)
+// 		{
+// 			c->status = co_stat_wait;
+// 			c->func = FiberFunc;
+// 			c->data ="fiber";
+// 			co_resume(t,c);
+// 		}
+// 		co_update(t);
+// 	}
+// 	int ticket_e = GetTickCount();
+// 	printf("all time :%d\n",ticket_e - ticket);
+// 
 
 
 	CDynamicStreamBuf buf;
@@ -59,8 +67,11 @@ int _tmain(int argc, _TCHAR* argv[])
 // 	os<<dd;
 // 	closure2->LoadFromStream(buf);
 // 	closure2->run();
-	RMI_CPlayer<CPlayer> player;
-	player.RegisterRmi();
-	player.call_func(buf);
+	tick_t t2  = get_tick_count();
 	return 0;
+}
+ITaskManager* _InitTask()
+{
+	co_thread_t t =  co_thread_init(DEFAULT_STACK_SIZE,10,100);
+	return new CTaskManager(t,DEFAULT_STACK_SIZE);
 }

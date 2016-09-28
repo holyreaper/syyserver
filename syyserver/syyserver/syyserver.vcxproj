@@ -84,8 +84,10 @@
     <ClInclude Include="platform\closure.h" />
     <ClInclude Include="platform\random_util.h" />
     <ClInclude Include="platform\timer_manager.h" />
+    <ClInclude Include="platform\time_util.h" />
     <ClInclude Include="platform\_platform_def.h" />
     <ClInclude Include="rmi\bd_list.h" />
+    <ClInclude Include="rmi\process.h" />
     <ClInclude Include="rmi\rmi.h" />
     <ClInclude Include="rmi\task.h" />
     <ClInclude Include="rmi\taurus.h" />

@@ -22,6 +22,7 @@ typedef int TaskID;
 #define TASK_SAFE_CHECK(TT) TT
 #define NO_TASK_SAFE_CHECK
 #include "../platform/ByteStream.h"
+#include "rmi.h"
 class CTask;
 //struct TaskTupleHelper;
 //struct InvokeHelper;
@@ -104,13 +105,13 @@ struct ITaskletManager
 /*****************************************//**
  * 函数闭包接口定义
  ********************************************/
-struct IFuncClosure
-{
-	virtual void Execute( void ) = 0;
-	virtual void Release( void ) = 0;
-	virtual void FetchResult( void* presult ) = 0;
-	virtual void FetchOutParam( COStream& os ) = 0;
-};
+// struct IFuncClosure
+// {
+// 	virtual void Execute( void ) = 0;
+// 	virtual void Release( void ) = 0;
+// 	virtual void FetchResult( void* presult ) = 0;
+// 	virtual void FetchOutParam( COStream& os ) = 0;
+// };
 
 /*****************************************//**
  * Task接口定义
@@ -193,7 +194,7 @@ struct ITask
 // interface IEventSelector;
 struct ITaskManager
 {
-	virtual TaskID StartTask( IFuncClosure* closure ) = 0;
+	virtual TaskID StartTask( IClosure* closure ) = 0;
 	virtual void ResumeTask( TaskID id ) = 0;
 	/*!
 	 * \brief 获取当前运行的Task

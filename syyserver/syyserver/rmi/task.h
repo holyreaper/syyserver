@@ -21,10 +21,11 @@ const size_t DEFAULT_YIELD_TIME		= 500;
 #include "taurus.h"
 #include "../platform/_platform_def.h"
 class CTaskManager;
+struct IClosure;
 class CTask : public ITask
 {
 	TaskID			m_id;
-	IFuncClosure*	m_closure;
+	IClosure*	m_closure;
 
 	CTaskManager*	m_tsk_mng;
 
@@ -43,7 +44,7 @@ class CTask : public ITask
 	TaskToken		m_task_token;
 
 public:
-	CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IFuncClosure* closure );
+	CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IClosure* closure );
 	~CTask();
 
 	void Init( size_t stack_size );
@@ -130,7 +131,7 @@ public:
 	explicit CTaskManager( co_thread_t co_thread, int stack_size );
 	~CTaskManager();
 
-	TaskID StartTask( IFuncClosure* closure );
+	TaskID StartTask( IClosure* closure );
 	void ResumeTask( TaskID id );
 
 	ITask* CurrentTask( void );

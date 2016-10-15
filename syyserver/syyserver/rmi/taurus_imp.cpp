@@ -59,7 +59,6 @@ inline int cleanup_coroutine(coroutine* c)
 
 inline int swap_context(cothread_ctx* tctx, coroutine* from, coroutine* to)
 {
-	//__CHECK_LAST_ERROR();
 	tctx->co_curr = to;
 	SwitchToFiber(to->ctx);
 	return 0;
@@ -76,7 +75,6 @@ void __stdcall FiberFunc(LPVOID lpParameter)
 		c->func(c->data);
 		c->status = co_stat_dead;
 		bd_push_front(&tctx->co_dead_list, &c->node);
-		//std::cout<<"helo"<<std::endl;
 		swap_context(tctx, c, tctx->co_main);
 	}
 }
@@ -142,7 +140,6 @@ inline int cleanup_coroutine(coroutine* c)
 
 inline int swap_context(cothread_ctx* tctx, coroutine* from, coroutine* to)
 {
-	__CHECK_LAST_ERROR();
 	tctx->co_curr = to;
 	return swapcontext(&from->ctx, &to->ctx);
 }
@@ -151,7 +148,6 @@ void FiberFunc(cothread_ctx* tctx, coroutine* c)
 {
 	while(1)
 	{
-		__CHECK_LAST_ERROR();
 		c->func(c->data);
 		c->status = co_stat_dead;
 		bd_push_front(&tctx->co_dead_list, &c->node);
@@ -316,18 +312,6 @@ int co_resume(co_thread_t t, coroutine_t co)
 	cothread_ctx* tctx = (cothread_ctx*)t;
 	if(c == tctx->co_curr)
 		return 0;
-
-	//if ( !bd_find_node(&tctx->co_wait_list, &c->node) )
-	//{
-	//	LogError( "$HI_RED$co_resume:Can not find corotuine in co_wait_list" );
-	//	LogError( "$HI_RED$-------------------------------" );
-	//	LogError( "$HI_RED$In co_ready_list\t :", bd_find_node(&tctx->co_ready_list, &c->node) );
-	//	LogError( "$HI_RED$In co_dead_list\t :" , bd_find_node(&tctx->co_dead_list , &c->node) );
-	//	LogError( "$HI_RED$In co_cache_list\t :", bd_find_node(&tctx->co_cache_list, &c->node) );
-	//	LogError( "-------------------------------" );
-	//	return 0;
-	//}
-
 	//bd_remove_node(&tctx->co_wait_list, &c->node);
 	if (c->status != co_stat_wait)
 	{

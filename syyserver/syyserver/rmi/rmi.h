@@ -42,7 +42,7 @@ public:
 
 	void print(int c)
 	{
-		std::cout<<c<<std::endl;
+	//	std::cout<<c<<std::endl;
 	}
 	void test2(testsc c)
 	{
@@ -50,21 +50,25 @@ public:
 		std::cout<<c.b<<std::endl;
 
 	}
+public:
+	std::map<int,IClosure*> g_closure_map;							
+
 protected:
 private:
+
 };
 
 template<typename TT, typename FF,typename AA>
 IClosure* Closure_Helper(int id,TT *a ,FF b,AA c)
 {
 	a->g_closure_map[id] = new Closure<TT,FF,AA>(a,b);
-	return NULL;
+	return  a->g_closure_map[id];
 };
 template<typename TT, typename FF>
 IClosure* Closure_Helper(int id,TT *a ,FF b)
 {
 	 a->g_closure_map[id] = new Closure<TT,FF>(a,b);
-	return NULL;
+	return  a->g_closure_map[id];
 };
 // template<typename FF>
 
@@ -72,11 +76,11 @@ IClosure* Closure_Helper(int id,TT *a ,FF b)
 // {
 // };
 
-inline void FiberFunc(void * param)
-{
-	g_count++;
-	//printf("%s count:%d\n",param,g_count++);
-};
+// inline void FiberFunc(void * param)
+// {
+// 	g_count++;
+// 	//printf("%s count:%d\n",param,g_count++);
+// };
 
 template<typename ST>
 inline CIStreamGeneric<ST> &operator >>(CIStreamGeneric<ST> &from, testsc& info)

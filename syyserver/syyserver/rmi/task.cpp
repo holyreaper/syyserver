@@ -4,8 +4,9 @@
 #include "task.h"
 
 #include "taurus_imp.h"
-
-CTask::CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IFuncClosure* closure )
+#include "rmi.h"
+#include "../platform/_platform_def.h"
+CTask::CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IClosure* closure )
 	:m_tsk_mng( mng )
 	,m_id( id )
 	,m_co_thread( cothread )
@@ -20,7 +21,7 @@ CTask::CTask( CTaskManager* mng, TaskID id, co_thread_t cothread, IFuncClosure* 
 }
 CTask::~CTask()
 {
-	m_closure->Release();
+	//m_closure->Release();
 
 	if ( m_timer_id )
 	{
@@ -102,12 +103,12 @@ CTask::params_t& CTask::GetContext( void )
 
 void CTask::FetchResult( void* presult )
 {
-	m_closure->FetchResult( presult );
+	//m_closure->FetchResult( presult );
 }
 
 void CTask::FetchOutParam( COStream& os )
 {
-	m_closure->FetchOutParam( os );
+	//m_closure->FetchOutParam( os );
 }
 
 void CTask::Init( size_t stack_size )
@@ -154,13 +155,13 @@ void CTask::__ExecuteImpl( void )
 #if _PLATFORM_WIN32_
 	__try
 	{
-		m_closure->Execute();
+		m_closure->run();
 	}
 	__except(SigStackHandler(GetExceptionInformation()))
 	{
 	}
 #else
-	m_closure->Execute();
+	m_closure->run();
 #endif
 }
 
@@ -195,7 +196,7 @@ CTaskManager::~CTaskManager()
 // 	alwaysAssert(m_search_table.empty());
 }
 
-TaskID CTaskManager::StartTask( IFuncClosure* closure )
+TaskID CTaskManager::StartTask( IClosure* closure )
 {
 	TaskID id = AllocID();
 	CTask* task = new CTask( this, id, m_co_thread, closure );

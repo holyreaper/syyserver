@@ -1,0 +1,4 @@
+message Event
+{
+	required int32 cmd=1;
+}

@@ -7,9 +7,9 @@
 */
 #include "../platform/ByteStream.h"
 #include "../platform/closure.h"
+#include "../event/event.pb.h"
 
-
-// static std::map<int,IClosure*> g_closure_map;
+// static std::map<int,IClosure*> _closure_map;
 
 
 #define REGISTER_RMI(id,cls,func_name) \
@@ -27,48 +27,18 @@ struct testsc
 	int a ;
 	int b;
 };
-class closure_test
-{
-public:
-
-	closure_test()
-	{
-
-	}
-	~closure_test()
-	{
-
-	}
-
-	void print(int c)
-	{
-	//	std::cout<<c<<std::endl;
-	}
-	void test2(testsc c)
-	{
-		std::cout<<c.a<<std::endl;
-		std::cout<<c.b<<std::endl;
-
-	}
-public:
-	std::map<int,IClosure*> g_closure_map;							
-
-protected:
-private:
-
-};
 
 template<typename TT, typename FF,typename AA>
 IClosure* Closure_Helper(int id,TT *a ,FF b,AA c)
 {
-	a->g_closure_map[id] = new Closure<TT,FF,AA>(a,b);
-	return  a->g_closure_map[id];
+	a->_closure_map[id] = new Closure<TT,FF,AA>(a,b);
+	return  a->_closure_map[id];
 };
 template<typename TT, typename FF>
 IClosure* Closure_Helper(int id,TT *a ,FF b)
 {
-	 a->g_closure_map[id] = new Closure<TT,FF>(a,b);
-	return  a->g_closure_map[id];
+	 a->_closure_map[id] = new Closure<TT,FF,Event>(a,b);
+	return  a->_closure_map[id];
 };
 // template<typename FF>
 
@@ -104,39 +74,46 @@ struct FuncInfo
 	}
 	int64 id;
 };
-inline bool ParseData(CDynamicStreamBuf& buf,IClosure* closure)
-{
-	closure->LoadFromStream(buf);
-}
+// inline bool ParseData(CDynamicStreamBuf& buf,IClosure* closure)
+// {
+// 	closure->LoadFromStream(buf);
+// }
 struct RMIServerBase
 {
-	virtual void call_func(CDynamicStreamBuf& buf)=0;
+	virtual void call_func(Event* ev)=0;
+	virtual void  RegisterRmi()	=0;
 };
 #define RMI_SERVER_CLASS_DECLARE(class_name,inherit_class)			\
 template<typename base_class>										\
 class class_name:public RMIServerBase,public inherit_class{			\
 public:																\
-class_name()														\
+class_name(ITaskManager* taskmng):_task_mng(taskmng)				\
 {																	\
 																	\
 }																	\
 public:																\
-virtual void call_func(CDynamicStreamBuf& buf)						\
-	{	FuncInfo info;												\
-		CIStream is(buf);											\
-		auto it = g_closure_map.find(2);							\
-		it->second->LoadFromStream(buf);							\
-		it->second->run();											\
-		std::cout<<"helo"<<std::endl;								\
+virtual void call_func(Event* ev)									\
+	{																\
+		if(ev->cmd()<= PFPE_START || ev->cmd() >=PFPE_MAX)return;	\
+		IClosure* clo = _closure_map[ev->cmd()];					\
+		clo->LoadFromStream(ev);									\
+		_task_mng->StartTask(clo);				\
 	}																\
 public:																\
-	std::map<int,IClosure*> g_closure_map;							\
-					
+IClosure * _closure_map[PFPE_MAX] ;								\
+ITaskManager* _task_mng;												\
+
 #define RMI_WRAPPER_CONSTRUCTOR										\
 public:																\
 	void RegisterRmi()											
 															
 #define RMI_SERVERFUNCTION_END() };
 
-
+enum PLAYER_FUNC_PARAMER_ENUM
+{	
+	PFPE_START=0,
+	PFPE_LOGIN,
+	PFPE_REPORT,
+	PFPE_MAX,
+};
 #endif//RMI_DEFINED_H_2016_0719

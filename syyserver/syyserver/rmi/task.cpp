@@ -1,6 +1,4 @@
 
-#include "stdafx.h"
-
 #include "task.h"
 
 #include "taurus_imp.h"
@@ -203,6 +201,7 @@ TaskID CTaskManager::StartTask( IClosure* closure )
 	
 	m_search_table[id] = task;
 
+	
 	//不再直接启动，而是放到start_list里面
 	//task->Init( m_default_stack_sz, closure );
 	m_ready_list.push_back(task);
@@ -248,7 +247,6 @@ void CTaskManager::_OnTaskFinished( ITask* tsk )
 	TaskID id = tsk->GetID();
 
 	m_search_table.erase( id );
-	
 	ResumeParentTask( id );
 }
 

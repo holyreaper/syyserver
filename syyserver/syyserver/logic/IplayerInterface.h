@@ -3,10 +3,9 @@
 //Íæ¼Ò½Ó¿Ú
 struct IplayerInterface
 {
-	virtual int LoginLoad() =0;
-	virtual void LogOut()=0;
-	virtual int Report(testsc a)=0;
-
+	virtual int LoginLoad(Event&event) =0;
+	virtual void LogOut(Event&event)=0;
+	virtual int Report(Event&event)=0;
 };
 
 

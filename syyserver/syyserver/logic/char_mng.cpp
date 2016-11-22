@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 
 #ifndef PLATFORM_WIN32
 #define  UPDATE_INTERVAL 1000

@@ -192,7 +192,7 @@ struct ITask
  * Task管理器接口
  ********************************************/
 // interface IEventSelector;
-struct ITaskManager
+struct ITaskManager//:public ITimerCallback
 {
 	virtual TaskID StartTask( IClosure* closure ) = 0;
 	virtual void ResumeTask( TaskID id ) = 0;

@@ -5,7 +5,6 @@
  *      Author: neil
  */
 
-#include "stdafx.h"
 #include "taurus_imp.h"
 #include "taurus.h"
 #include <iostream>

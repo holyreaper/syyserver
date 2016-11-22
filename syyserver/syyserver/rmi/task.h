@@ -16,7 +16,6 @@ const size_t DEFAULT_CO_POOL_MINNUM = 50;
 const size_t DEFAULT_CO_POOL_MAXNUM = 100;
 const size_t DEFAULT_STACK_SIZE		= 1024*64;
 const size_t DEFAULT_YIELD_TIME		= 500;
-
 //------------------------------------------
 #include "taurus.h"
 #include "../platform/_platform_def.h"
@@ -111,8 +110,9 @@ class CTaskManager : public ITaskManager
 	size_t			m_default_stack_sz;
 
 #ifdef _HASH_MAP_
-	typedef std::unordered_map<TaskID,CTask*> SearchTable;
-	typedef std::unordered_map<TaskID,TaskID> JoinTable;
+	typedef std::map<TaskID,CTask*> SearchTable;
+	typedef std::map<TaskID,TaskID> JoinTable;
+
 #else
 	typedef std::map<TaskID,CTask*> SearchTable;
 	typedef std::map<TaskID,TaskID> JoinTable;

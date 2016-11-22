@@ -25,9 +25,24 @@
     <Filter Include="源文件\logic">
       <UniqueIdentifier>{17fc964e-26bb-42df-9fcb-7e8af201df89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\proto">
+      <UniqueIdentifier>{6f23ac32-6842-46ee-93ce-9d0a06de8c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\event">
+      <UniqueIdentifier>{16a4ad70-c9de-4fb0-810b-7797eb1e3a73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\queue">
+      <UniqueIdentifier>{2c752571-851b-466f-bee1-3ff42de065f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\net">
+      <UniqueIdentifier>{d864db9a-01ad-45fd-8285-be92b6c10310}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="protocol\my\event.proto">
+      <Filter>头文件\proto</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -84,6 +99,15 @@
     <ClInclude Include="rmi\process.h">
       <Filter>头文件\rmi</Filter>
     </ClInclude>
+    <ClInclude Include="event\event.pb.h">
+      <Filter>头文件\event</Filter>
+    </ClInclude>
+    <ClInclude Include="queue\kfifol.h">
+      <Filter>头文件\queue</Filter>
+    </ClInclude>
+    <ClInclude Include="platform\singleton.h">
+      <Filter>头文件\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -103,6 +127,12 @@
     </ClCompile>
     <ClCompile Include="logic\char_mng.cpp">
       <Filter>源文件\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event.pb.cc">
+      <Filter>头文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="queue\kfifol.cpp">
+      <Filter>头文件\queue</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

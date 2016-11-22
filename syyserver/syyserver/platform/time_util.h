@@ -11,7 +11,7 @@ static tick_t get_tick_count()
 #pragma warning(disable:4996)
 	static struct TIMEB tb;
 	ftime (&tb);            // end time ms
-	return tb.time;
+	return tb.time *1000 +tb.millitm ;
 #else
 #include <sys/time.h>
 	static struct timeval tv;

@@ -16,39 +16,33 @@
 #include "./platform/random_util.h"
 #include "./rmi/task.h"
 #include "./platform/time_util.h"
+#include "./event/event.pb.h"
+#include "./queue/kfifol.h"
+#include "./platform/singleton.h"
 //  #include "./platform/timer_manager.h"
 ITaskManager* _InitTask(co_thread_t* t);
 int _tmain(int argc, _TCHAR* argv[])
 {
-
-	unsigned int a =0xffffffff;
-	unsigned int size = 100;
-	unsigned int c = size -a;
+	Event ev ;
+	ev.set_cmd(1);
+	std::string sev; 
+	ev.SerializeToString(&sev);
 	bool exit = false;
-	//init net thread
-	//init cothread//
-	co_thread_t t =  co_thread_init(DEFAULT_STACK_SIZE,10,100);
+	co_thread_t t =  co_thread_init(DEFAULT_STACK_SIZE,10,10);
 	ITaskManager * task = _InitTask(&t);
-
-	closure_test test;
-	CDynamicStreamBuf buf;
-	COStream os(buf);
-	int dd =2;
-	os<<dd;
-
-IClosure * closure = Closure_Helper(1,&test,&closure_test::print,1);
-closure->LoadFromStream(buf);
-//closure->run();
-tick_t t1  = get_tick_count();
-
-int g_count = 0;
+	RMIServerBase* player = new RMI_CPlayer<CPlayer>(task);
+	player->RegisterRmi();
+	tick_t t1  = get_tick_count();
+	
+	int g_count = 0;
 	assert(task);
 	do 
 	{
-		task->StartTask(closure);
-		((CTaskManager*)task)->OnNotice(NULL);
+		player->call_func(&ev);
+		((CTaskManager * )task)->OnNotice(NULL);
 		g_count++;
 	} while (1000000 > g_count);
+	
 // 	co_thread_t t =  co_thread_init(1024*64,10,100);
 
 // 	cothread_ctx* ctx = (cothread_ctx*)t;
@@ -86,7 +80,7 @@ int g_count = 0;
 	tick_t t2  = get_tick_count();
 
 	std::cout<<t2- t1<<std::endl;
-
+//	Singleton<kfifol>::instance().init();
 	return 0;
 }
 ITaskManager* _InitTask(co_thread_t* t)

@@ -22,6 +22,9 @@ typedef long long tick_t;
 
 #endif
 
+#ifndef NULL
+#define NULL 0
+#endif
 /*
 time_t ltime1, ltime2, tmp_time;
 struct TIMEB tstruct1, tstruct2;
